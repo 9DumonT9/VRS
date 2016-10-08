@@ -95,18 +95,16 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
-	BUTTON = !GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_13);
-	if (BUTTON){
-		GPIO_SetBits(GPIOA, GPIO_Pin_5);
-	}
-	else{
-		GPIO_ResetBits(GPIOA, GPIO_Pin_5);
-	}
-
-	  //GPIO_SetBits(GPIOA, GPIO_Pin_5);
-	  //for(int j=0;j<1000000;j++);
-	  //GPIO_ResetBits(GPIOA, GPIO_Pin_5);
-	  //for(int j=0;j<1000000;j++);
+	  while(GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_13));
+		  if (GPIO_ReadOutputDataBit(GPIOA,GPIO_Pin_5)){
+			  GPIO_ResetBits(GPIOA, GPIO_Pin_5);
+		  }
+		  else{
+			  GPIO_SetBits(GPIOA, GPIO_Pin_5);
+		  }
+		  for (i=0;i<=100000;i++);
+	  while(!GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_13));
+		  for (i=0;i<=100000;i++);
   }
   return 0;
 }
