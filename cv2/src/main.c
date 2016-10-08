@@ -100,9 +100,19 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
-	i++;
+	//i++;
+	  //uloha 3 - part 1
+	  blick_ledPA5();
   }
   return 0;
+}
+
+void blick_ledPA5(){
+	int i=0;
+	for (i=0;i<=1000000;i++){
+
+	}
+	GPIOA->ODR ^= 0b1 << 5;
 }
 
 #ifdef  USE_FULL_ASSERT
