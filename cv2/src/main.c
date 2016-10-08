@@ -100,9 +100,18 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
+	  if (GPIOC->IDR & (uint32_t) 0b0010000000000000) {
+		  BUTTON = 0;
+	  		}
+	  else {
+		  BUTTON = 1;
+	  		}
 	//i++;
 	  //uloha 3 - part 1
-	  blick_ledPA5();
+	  //blick_ledPA5();
+
+	  //uloha 3 - part 2
+	  button_status(BUTTON);
   }
   return 0;
 }
@@ -113,6 +122,15 @@ void blick_ledPA5(){
 
 	}
 	GPIOA->ODR ^= 0b1 << 5;
+}
+
+void button_status(b){
+	if (b==1) {
+		GPIOA->ODR |= 0b1 << 5;
+	}
+	else{
+		  GPIOA->ODR &= 0b0 << 5;
+	}
 }
 
 #ifdef  USE_FULL_ASSERT
