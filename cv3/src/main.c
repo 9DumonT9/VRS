@@ -80,6 +80,17 @@ int main(void)
 
     	  GPIO_SetBits(GPIOA, GPIO_Pin_5);
 
+  //uloha2
+
+		  //int  BUTTON=0;
+		  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOC,ENABLE);
+		  GPIO_InitTypeDef gpioInitStruct1;
+			  gpioInitStruct.GPIO_Mode = GPIO_Mode_IN;
+			  gpioInitStruct.GPIO_OType = GPIO_OType_PP;
+			  gpioInitStruct.GPIO_Pin = GPIO_Pin_13;
+			  gpioInitStruct.GPIO_Speed = GPIO_Speed_400KHz;
+		  GPIO_Init(GPIOC, &gpioInitStruct1);
+
 
   /* Infinite loop */
   while (1)
