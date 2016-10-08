@@ -82,7 +82,7 @@ int main(void)
 
   //uloha2
 
-		  //int  BUTTON=0;
+		  int  BUTTON=0;
 		  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOC,ENABLE);
 		  GPIO_InitTypeDef gpioInitStruct1;
 			  gpioInitStruct.GPIO_Mode = GPIO_Mode_IN;
@@ -95,7 +95,7 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
-	i++;
+	BUTTON = !GPIO_ReadInputDataBit(GPIOC,GPIO_Pin_13);
   }
   return 0;
 }
