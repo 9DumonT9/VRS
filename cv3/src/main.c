@@ -78,6 +78,8 @@ int main(void)
     	  	  gpioInitStruct.GPIO_Speed = GPIO_Speed_400KHz;
     	  GPIO_Init(GPIOA, &gpioInitStruct);
 
+    	  GPIO_SetBits(GPIOA, GPIO_Pin_5);
+
 
   /* Infinite loop */
   while (1)
