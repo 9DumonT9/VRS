@@ -46,6 +46,7 @@ SOFTWARE.
 **
 **===========================================================================
 */
+
 int main(void)
 {
   int i = 0;
@@ -100,18 +101,20 @@ int main(void)
   /* Infinite loop */
   while (1)
   {
-	  if (GPIOC->IDR & (uint32_t) 0b0010000000000000) {
-		  BUTTON = 0;
-	  		}
-	  else {
-		  BUTTON = 1;
-	  		}
+	  while((GPIOC->IDR & (uint32_t) 0b0010000000000000));
+	  	  static_button_status();
+		  for (i=0;i<=100000;i++);
+  	  while(!(GPIOC->IDR & (uint32_t) 0b0010000000000000));
+		  for (i=0;i<=100000;i++);
 	//i++;
 	  //uloha 3 - part 1
 	  //blick_ledPA5();
 
 	  //uloha 3 - part 2
-	  button_status(BUTTON);
+	  //button_status(BUTTON);
+
+	  //uloha 3 - part 3
+	  //static_button_status(BUTTON);
   }
   return 0;
 }
@@ -131,6 +134,10 @@ void button_status(b){
 	else{
 		  GPIOA->ODR &= 0b0 << 5;
 	}
+}
+
+void static_button_status(){
+		GPIOA->ODR ^= 0b1 << 5;
 }
 
 #ifdef  USE_FULL_ASSERT
