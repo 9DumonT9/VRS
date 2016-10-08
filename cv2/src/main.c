@@ -78,6 +78,16 @@ int main(void)
   	  GPIOA->OSPEEDR |= 0b11 << 2*5;
   	  GPIOA->PUPDR |= 0b01 << 2*5 ;
 
+  	//zapnutie a vypnutie pomocou ODR
+	  GPIOA->ODR |= 0b1 << 5;
+	  GPIOA->ODR &= 0b0 << 5;
+
+	  //zapnutie a vypnutie pomocou BSRR
+	  GPIOA->BSRRL |= 0b1 << 5;
+	  GPIOA->BSRRH |= 0b1 << 5;
+
+	  //prepinanie stavu pomocou ODR
+	  GPIOA->ODR ^= 0b1 << 5;
 
   /* Infinite loop */
   while (1)
