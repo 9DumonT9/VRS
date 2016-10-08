@@ -89,6 +89,14 @@ int main(void)
 	  //prepinanie stavu pomocou ODR
 	  GPIOA->ODR ^= 0b1 << 5;
 
+	  //uloha2
+	  int  BUTTON=0;
+	  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOC,ENABLE);
+	  GPIOC->MODER |= 0b00 << 13*2;
+	  GPIOC->OTYPER &= 0b0 << 13;
+	  GPIOC->PUPDR |= 0b00 << 13*2;
+	  BUTTON = GPIOC->IDR;
+
   /* Infinite loop */
   while (1)
   {
