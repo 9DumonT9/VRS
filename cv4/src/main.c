@@ -29,17 +29,13 @@ SOFTWARE.
 /* Includes */
 #include <stddef.h>
 #include "stm32l1xx.h"
-#include <stdio.h>
 
 
 /* Private typedef */
 /* Private define  */
 /* Private macro */
 /* Private variables */
-static __IO uint32_t TimingDelay;
-uint8_t BlinkSpeed = 0;
 /* Private function prototypes */
-RCC_ClocksTypeDef RCC_Clocks;
 /* Private functions */
 
 
@@ -52,8 +48,6 @@ RCC_ClocksTypeDef RCC_Clocks;
 */
 int main(void)
 {
-  int i = 0;
-
   /**
   *  IMPORTANT NOTE!
   *  See the <system_*.c> file and how/if the SystemInit() function updates 
@@ -73,6 +67,7 @@ int main(void)
 
   /* TODO - Add your application code here */
   adc_init();
+  GPIO_LED_init();
 
   uint16_t AD_value;
   /* Infinite loop */
@@ -80,8 +75,11 @@ int main(void)
   {
 	  /* Start ADC Software Conversion */
 	   ADC_SoftwareStartConv(ADC1);
-	   	   while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC)){}
+	  	   while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC)){}
 	   AD_value=ADC_GetConversionValue(ADC1);
+	   Blink_LED_slow(AD_value);
+	   Blink_LED_medium(AD_value);
+	   Blink_LED_fast(AD_value);
   }
   return 0;
 }
@@ -121,6 +119,53 @@ void adc_init(void) {
 	/* Start ADC Software Conversion */
 	ADC_SoftwareStartConv(ADC1);
 
+}
+
+void GPIO_LED_init(){
+	//inicializacia GPIO
+	  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+	  GPIO_InitTypeDef gpioInitStruct;
+		  gpioInitStruct.GPIO_Mode = GPIO_Mode_OUT;
+		  gpioInitStruct.GPIO_OType = GPIO_OType_PP;
+		  gpioInitStruct.GPIO_Pin = GPIO_Pin_5;
+		  gpioInitStruct.GPIO_Speed = GPIO_Speed_400KHz;
+	  GPIO_Init(GPIOA, &gpioInitStruct);
+}
+
+void Blink_LED_slow(AD_value){
+	while (AD_value<=1000){
+			   GPIO_SetBits(GPIOA, GPIO_Pin_5);
+			   for(int i=0;i<1000000;i++);
+			   GPIO_ResetBits(GPIOA, GPIO_Pin_5);
+			   for(int i=0;i<1000000;i++);
+			   ADC_SoftwareStartConv(ADC1);
+			   	  while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC)){}
+			   AD_value=ADC_GetConversionValue(ADC1);
+		   }
+}
+
+void Blink_LED_medium(AD_value){
+	   while (AD_value>1000 && AD_value<=2000){
+	   		   GPIO_SetBits(GPIOA, GPIO_Pin_5);
+	   		   for(int i=0;i<500000;i++);
+	   		   GPIO_ResetBits(GPIOA, GPIO_Pin_5);
+	   		   for(int i=0;i<500000;i++);
+	   		   ADC_SoftwareStartConv(ADC1);
+	   		   	  while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC)){}
+	   		   AD_value=ADC_GetConversionValue(ADC1);
+	   }
+}
+
+void Blink_LED_fast(AD_value){
+	   while (AD_value>2000 && AD_value<=4000){
+	   		   GPIO_SetBits(GPIOA, GPIO_Pin_5);
+	   		   for(int i=0;i<100000;i++);
+	   		   GPIO_ResetBits(GPIOA, GPIO_Pin_5);
+	   		   for(int i=0;i<100000;i++);
+	   		   ADC_SoftwareStartConv(ADC1);
+	   		   	  while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC)){}
+	   		   AD_value=ADC_GetConversionValue(ADC1);
+	   }
 }
 
 #ifdef  USE_FULL_ASSERT
