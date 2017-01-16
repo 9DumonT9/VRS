@@ -94,7 +94,7 @@ void initializeDisplay() {
 	for (int i = 0; i < placesCount; i++) {
 		displayPlaceFree(i, 1);
 	}
-	displayPlacesCount(4);
+	displayPlacesCount(placesCount);
 }
 
 void displayPlaceFree(int place, int free) {

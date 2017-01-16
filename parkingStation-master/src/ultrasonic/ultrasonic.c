@@ -22,6 +22,7 @@ typedef struct UltrasonicSensor {
 	int senseCount;
 	int lastProximity;
 	int placeFreeingStart;
+	int placeOccupyingStart;
 } UltrasonicSensor;
 
 UltrasonicSensor ultrasonicSensor(GPIO_TypeDef *gpioOut, uint16_t pinOut, GPIO_TypeDef *gpioIn,
@@ -100,8 +101,15 @@ int measureProximity(int sensor) {
 //	  }
 
 	  if (distance < 7.0) {
-		  ultrasonicSensors[sensor].placeOccupied = 1;
-		  GPIO_SetBits(ultrasonicSensors[sensor].gpioLed, ultrasonicSensors[sensor].pinLed);
+		  if (!ultrasonicSensors[sensor].placeOccupied) {
+		  	if (ultrasonicSensors[sensor].lastProximity == 0)
+			  	ultrasonicSensors[sensor].placeOccupyingStart = timer;
+
+		  	if (timer - ultrasonicSensors[sensor].placeOccupyingStart > 200) {
+			  	ultrasonicSensors[sensor].placeOccupied = 1;
+			  	GPIO_SetBits(ultrasonicSensors[sensor].gpioLed, ultrasonicSensors[sensor].pinLed);
+		  	}
+		  }
 	  }
 	  else if (ultrasonicSensors[sensor].placeOccupied) {
 		  if (ultrasonicSensors[sensor].lastProximity == 1)

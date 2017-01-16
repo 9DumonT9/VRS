@@ -80,7 +80,6 @@ int main(void)
 	initializeDisplay();
 	initializeGate();
 	initializeUltrasonicSensors();
-	displayPlacesCount(5);
 
 	int placeIsFree[kUltrasonicSensorsCount] = {1, 1, 1, 1};
 
